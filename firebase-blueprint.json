@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product in the inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "category": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "sku", "price", "stock"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "A billing record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "quantity": { "type": "number" },
+              "price": { "type": "number" },
+              "total": { "type": "number" }
+            }
+          }
+        },
+        "subtotal": { "type": "number" },
+        "tax": { "type": "number" },
+        "total": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "createdBy": { "type": "string" }
+      },
+      "required": ["customerName", "items", "total", "createdAt", "createdBy"]
+    },
+    "StockLog": {
+      "title": "StockLog",
+      "description": "A log of stock changes",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "change": { "type": "number" },
+        "type": { "type": "string", "enum": ["sale", "restock", "adjustment"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      },
+      "required": ["productId", "change", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/products": {
+      "schema": "Product",
+      "description": "Collection of products"
+    },
+    "/invoices": {
+      "schema": "Invoice",
+      "description": "Collection of billing records"
+    },
+    "/stockLogs": {
+      "schema": "StockLog",
+      "description": "History of inventory changes"
+    }
+  }
+}
